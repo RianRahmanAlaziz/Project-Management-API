@@ -3,11 +3,11 @@
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\ProfileController;
 use App\Http\Controllers\Api\V1\HealthController;
+use App\Http\Controllers\Api\V1\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', HealthController::class)
     ->name('health');
-
 
 // Authentication
 
@@ -26,4 +26,10 @@ Route::prefix('auth')->name('auth.')->group(function (): void {
 
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });
+});
+
+Route::middleware('auth:sanctum')->group(function (): void {
+
+    // Workspace
+    Route::apiResource('workspaces', WorkspaceController::class);
 });
