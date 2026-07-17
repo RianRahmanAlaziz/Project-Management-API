@@ -79,7 +79,7 @@ class Workspace extends Model
         WorkspaceRole ...$roles,
     ): bool {
         $roleValues = array_map(
-            static fn (WorkspaceRole $role): string => $role->value,
+            static fn(WorkspaceRole $role): string => $role->value,
             $roles,
         );
 
@@ -88,6 +88,15 @@ class Workspace extends Model
             ->whereIn('role', $roleValues)
             ->exists();
     }
+
+    // public function canManageMembers(User $user): bool
+    // {
+    //     return $this->hasRole(
+    //         $user,
+    //         WorkspaceRole::OWNER,
+    //         WorkspaceRole::ADMIN,
+    //     );
+    // }
 
     /**
      * Route model binding menggunakan slug.
