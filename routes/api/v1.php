@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\ProfileController;
 use App\Http\Controllers\Api\V1\HealthController;
+use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\WorkspaceController;
 use App\Http\Controllers\Api\V1\WorkspaceMemberController;
 use Illuminate\Support\Facades\Route;
@@ -35,4 +36,5 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('workspaces', WorkspaceController::class);
     // Workspace Members
     Route::apiResource('workspaces.members', WorkspaceMemberController::class);
+    Route::apiResource('workspaces.projects',  ProjectController::class,);
 });

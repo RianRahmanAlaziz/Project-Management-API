@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Workspace extends Model
+class Project extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -19,15 +19,34 @@ class Workspace extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'workspace_id',
         'owner_id',
         'name',
         'slug',
         'description',
+        'status',
+        'color',
+        'start_date',
+        'due_date',
     ];
 
     /**
-     * Owner utama workspace.
+     * @return array<string, string>
      */
+
+    protected function casts(): array
+    {
+        return [
+            'start_date' => 'datetime',
+            'due_date' => 'datetime',
+        ];
+    }
+
+    public function workspace(): BelongsTo
+    {
+        return $this->belongsTo(Workspace::class);
+    }
+
     public function owner(): BelongsTo
     {
         return $this->belongsTo(
@@ -36,22 +55,16 @@ class Workspace extends Model
         );
     }
 
-    /**
-     * Record membership workspace.
-     */
     public function memberships(): HasMany
     {
-        return $this->hasMany(WorkspaceMember::class);
+        return $this->hasMany(ProjectMember::class);
     }
 
-    /**
-     * Semua user yang menjadi anggota workspace.
-     */
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(
             User::class,
-            'workspace_members',
+            'project_members',
         )
             ->withPivot([
                 'id',
@@ -61,14 +74,6 @@ class Workspace extends Model
             ->withTimestamps();
     }
 
-    public function projects(): HasMany
-    {
-        return $this->hasMany(Project::class);
-    }
-
-    /**
-     * Memeriksa apakah user merupakan anggota workspace.
-     */
     public function hasMember(User $user): bool
     {
         return $this->memberships()
@@ -94,18 +99,6 @@ class Workspace extends Model
             ->exists();
     }
 
-    // public function canManageMembers(User $user): bool
-    // {
-    //     return $this->hasRole(
-    //         $user,
-    //         WorkspaceRole::OWNER,
-    //         WorkspaceRole::ADMIN,
-    //     );
-    // }
-
-    /**
-     * Route model binding menggunakan slug.
-     */
     public function getRouteKeyName(): string
     {
         return 'slug';
