@@ -23,7 +23,7 @@ final class WorkspaceService
         return Workspace::query()
             ->whereHas(
                 'memberships',
-                fn ($query) => $query->where(
+                fn($query) => $query->where(
                     'user_id',
                     $user->id,
                 ),
@@ -50,9 +50,10 @@ final class WorkspaceService
             )
             ->with([
                 'owner',
-                'memberships' => fn ($query) => $query
+                'memberships' => fn($query) => $query
                     ->where('user_id', $user->id),
             ])
+            ->withCount('projects')
             ->withCount('members')
             ->latest()
             ->paginate($perPage);
@@ -104,7 +105,7 @@ final class WorkspaceService
     ): Workspace {
         $workspace->load([
             'owner',
-            'memberships' => fn ($query) => $query
+            'memberships' => fn($query) => $query
                 ->where('user_id', $user->id),
         ]);
 
@@ -197,7 +198,7 @@ final class WorkspaceService
             ->where('slug', $slug)
             ->when(
                 $ignoreWorkspaceId !== null,
-                fn ($query) => $query->where(
+                fn($query) => $query->where(
                     'id',
                     '!=',
                     $ignoreWorkspaceId,

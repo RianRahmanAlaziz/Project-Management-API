@@ -35,6 +35,7 @@ class WorkspaceResource extends JsonResource
                 ? $currentRole->value
                 : $currentRole,
 
+            'project_count' => $this->whenCounted('projects'),
             'members_count' => $this->whenCounted('members'),
 
             'created_at' => $this->created_at?->toIso8601String(),

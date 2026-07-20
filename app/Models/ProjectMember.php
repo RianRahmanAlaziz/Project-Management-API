@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\WorkspaceRole;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +28,7 @@ class ProjectMember extends Model
     protected function casts(): array
     {
         return [
+            'role' => WorkspaceRole::class,
             'joined_at' => 'datetime',
         ];
     }

@@ -71,8 +71,16 @@ class Workspace extends Model
      */
     public function hasMember(User $user): bool
     {
+        return $this->hasMemberById($user->id);
+    }
+
+    /**
+     * Memeriksa membership berdasarkan user ID.
+     */
+    public function hasMemberById(int $userId): bool
+    {
         return $this->memberships()
-            ->where('user_id', $user->id)
+            ->where('user_id', $userId)
             ->exists();
     }
 

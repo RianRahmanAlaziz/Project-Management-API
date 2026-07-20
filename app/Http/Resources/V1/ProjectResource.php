@@ -30,6 +30,8 @@ class ProjectResource extends JsonResource
             'start_date' => $this->start_date?->toISOString(),
             'due_date' => $this->due_date?->toISOString(),
 
+            'members_count' => $this->whenCounted('members'),
+
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];
