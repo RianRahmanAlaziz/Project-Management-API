@@ -31,6 +31,13 @@ class UpdateWorkspaceRequest extends FormRequest
                 'max:100',
             ],
 
+            'color' => [
+                'sometimes',
+                'nullable',
+                'string',
+                'max:100',
+            ],
+
             'description' => [
                 'sometimes',
                 'nullable',
@@ -50,6 +57,14 @@ class UpdateWorkspaceRequest extends FormRequest
             $data['name'] = is_string($name)
                 ? trim($name)
                 : $name;
+        }
+
+        if ($this->has('color')) {
+            $color = $this->input('color');
+
+            $data['color'] = is_string($color)
+                ? trim($color)
+                : $color;
         }
 
         if ($this->has('description')) {
@@ -72,6 +87,9 @@ class UpdateWorkspaceRequest extends FormRequest
             'name.required' => 'Nama workspace wajib diisi.',
             'name.string' => 'Nama workspace harus berupa teks.',
             'name.max' => 'Nama workspace maksimal 100 karakter.',
+
+            'color.string' => 'color workspace wajib diisi.',
+            'color.max' => 'color workspace maksimal 100 karakter.',
 
             'description.string' => 'Deskripsi workspace harus berupa teks.',
             'description.max' => 'Deskripsi workspace maksimal 2000 karakter.',

@@ -22,6 +22,7 @@ class Workspace extends Model
         'owner_id',
         'name',
         'slug',
+        'color',
         'description',
     ];
 

@@ -25,6 +25,7 @@ class WorkspaceResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'color' => $this->color,
             'description' => $this->description,
 
             'owner' => UserResource::make(

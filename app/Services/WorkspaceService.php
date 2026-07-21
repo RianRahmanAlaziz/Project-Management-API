@@ -76,6 +76,7 @@ final class WorkspaceService
                     'slug' => $this->generateUniqueSlug(
                         $data['name']
                     ),
+                    'color' => $data['color'] ?? null,
                     'description' => $data['description'] ?? null,
                 ]);
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('slug', 160)->unique();
             $table->text('description')->nullable();
+            $table->string('color', 100)->nullable();
 
             $table->timestamps();
             $table->softDeletes();
