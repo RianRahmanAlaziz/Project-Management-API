@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\Auth\AuthController;
 use App\Http\Controllers\Api\V1\Auth\ProfileController;
 use App\Http\Controllers\Api\V1\HealthController;
+use App\Http\Controllers\Api\V1\KanbanColumnController;
 use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\ProjectMemberController;
 use App\Http\Controllers\Api\V1\WorkspaceController;
@@ -41,4 +42,21 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('workspaces.projects', ProjectController::class,);
     // Projects Members
     Route::apiResource('workspaces.projects.members', ProjectMemberController::class,);
+
+    Route::prefix('workspaces/{workspace}/projects/{project}/columns')->group(function () {
+
+        Route::get('/', [KanbanColumnController::class, 'index'])->name('v1.projects.columns.index');
+
+        Route::post('/', [KanbanColumnController::class, 'store'])->name('v1.projects.columns.store');
+
+        /*
+         * Harus sebelum /{column} supaya "reorder"
+         * tidak dianggap sebagai parameter column.
+        */
+        Route::patch('/reorder', [KanbanColumnController::class, 'reorder'])->name('v1.projects.columns.reorder');
+
+        Route::patch('/{column}', [KanbanColumnController::class, 'update'])->name('v1.projects.columns.update');
+
+        Route::delete('/{column}', [KanbanColumnController::class, 'destroy'])->name('v1.projects.columns.destroy');
+    });
 });

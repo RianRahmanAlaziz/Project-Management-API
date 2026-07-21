@@ -81,6 +81,11 @@ class Project extends Model
             ->exists();
     }
 
+    public function columns(): HasMany
+    {
+        return $this->hasMany(KanbanColumn::class)->orderBy('position');
+    }
+
     /**
      * Memeriksa apakah user memiliki salah satu role.
      */
