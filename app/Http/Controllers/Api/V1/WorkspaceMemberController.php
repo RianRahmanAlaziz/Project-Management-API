@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WorkspaceMember\InviteWorkspaceMemberRequest;
 use App\Http\Requests\WorkspaceMember\UpdateWorkspaceMemberRoleRequest;
+use App\Http\Resources\V1\UserResource;
 use App\Http\Resources\V1\WorkspaceMemberResource;
 use App\Models\Workspace;
 use App\Models\WorkspaceMember;
@@ -55,6 +56,54 @@ class WorkspaceMemberController extends Controller
                     'total' => $members->total(),
                     'from' => $members->firstItem(),
                     'to' => $members->lastItem(),
+                ],
+            ],
+        );
+    }
+
+    public function availableMembers(
+        Request $request,
+        Workspace $workspace,
+    ): JsonResponse {
+        Gate::authorize('create', $workspace);
+
+        $perPage = min(
+            max(
+                $request->integer('per_page', 15),
+                1,
+            ),
+            100,
+        );
+
+        $search = trim(
+            (string) $request->query(
+                'search',
+                '',
+            ),
+        );
+
+        $users = $this->workspaceMemberService
+            ->paginateAvailableMembers(
+                workspace: $workspace,
+                perPage: $perPage,
+                search: $search,
+            );
+
+        return ApiResponse::success(
+            data: UserResource::collection(
+                $users->getCollection(),
+            )->resolve($request),
+
+            message: 'Available workspace members retrieved successfully.',
+
+            meta: [
+                'pagination' => [
+                    'current_page' => $users->currentPage(),
+                    'last_page' => $users->lastPage(),
+                    'per_page' => $users->perPage(),
+                    'total' => $users->total(),
+                    'from' => $users->firstItem(),
+                    'to' => $users->lastItem(),
                 ],
             ],
         );

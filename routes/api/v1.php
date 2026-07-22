@@ -37,7 +37,26 @@ Route::middleware('auth:sanctum')->group(function (): void {
     // Workspace
     Route::apiResource('workspaces', WorkspaceController::class);
     // Workspace Members
-    Route::apiResource('workspaces.members', WorkspaceMemberController::class);
+    Route::get(
+        'workspaces/{workspace}/members/available',
+        [
+            WorkspaceMemberController::class,
+            'availableMembers',
+        ],
+    )->name(
+        'v1.workspaces.members.available',
+    );
+
+    Route::apiResource(
+        'workspaces.members',
+        WorkspaceMemberController::class,
+    )->only([
+        'index',
+        'store',
+        'update',
+        'destroy',
+    ]);
+
     // Projects
     Route::apiResource('workspaces.projects', ProjectController::class,);
     // Projects Members

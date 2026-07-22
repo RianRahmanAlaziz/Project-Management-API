@@ -46,6 +46,41 @@ final class WorkspaceMemberService
             ->paginate($perPage);
     }
 
+    public function paginateAvailableMembers(
+        Workspace $workspace,
+        int $perPage = 15,
+        ?string $search = null,
+    ): LengthAwarePaginator {
+        return User::query()
+            ->whereNotIn(
+                'id',
+                $workspace->memberships()
+                    ->select('user_id'),
+            )
+            ->when(
+                $search,
+                function ($query, $search): void {
+                    $query->where(
+                        function ($query) use ($search): void {
+                            $query
+                                ->where(
+                                    'name',
+                                    'like',
+                                    "%{$search}%",
+                                )
+                                ->orWhere(
+                                    'email',
+                                    'like',
+                                    "%{$search}%",
+                                );
+                        },
+                    );
+                },
+            )
+            ->orderBy('name')
+            ->paginate($perPage);
+    }
+
     /**
      * Menambahkan member ke workspace.
      *
