@@ -174,12 +174,13 @@ class WorkspaceMemberController extends Controller
      */
     public function destroy(
         Workspace $workspace,
-        WorkspaceMember $workspaceMember,
+        WorkspaceMember $member,
     ): JsonResponse {
+
         Gate::authorize('delete', $workspace);
 
         $this->workspaceMemberService->delete(
-            $workspaceMember,
+            $member,
         );
 
         return ApiResponse::success(
