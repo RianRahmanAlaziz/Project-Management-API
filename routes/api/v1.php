@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\HealthController;
 use App\Http\Controllers\Api\V1\KanbanColumnController;
 use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\ProjectMemberController;
+use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\WorkspaceController;
 use App\Http\Controllers\Api\V1\WorkspaceMemberController;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,8 @@ Route::prefix('auth')->name('auth.')->group(function (): void {
 });
 
 Route::middleware('auth:sanctum')->group(function (): void {
-
+    // User Management
+    Route::apiResource('users', UserController::class);
     // Workspace
     Route::patch('workspaces/{workspace}/transfer-ownership',  [WorkspaceController::class, 'transferOwnership'])->name('workspaces.transfer-ownership');
 
