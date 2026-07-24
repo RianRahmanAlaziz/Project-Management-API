@@ -44,6 +44,14 @@ class WorkspacePolicy
         );
     }
 
+    public function transferOwnership(User $user, Workspace $workspace): bool
+    {
+        return $workspace->hasRole(
+            $user,
+            WorkspaceRole::OWNER,
+        );
+    }
+
     /**
      * Determine whether the user can delete the model.
      */

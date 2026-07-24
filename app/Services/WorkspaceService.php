@@ -9,6 +9,7 @@ use App\Models\WorkspaceMember;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 final class WorkspaceService
 {
@@ -110,7 +111,10 @@ final class WorkspaceService
                 ->where('user_id', $user->id),
         ]);
 
-        $workspace->loadCount('members');
+        $workspace->loadCount([
+            'projects',
+            'members',
+        ]);
 
         return $workspace;
     }
@@ -144,6 +148,57 @@ final class WorkspaceService
         return $this->loadForResponse(
             $workspace->refresh(),
             $user,
+        );
+    }
+
+    public function transferOwnership(
+        Workspace $workspace,
+        User $currentOwner,
+        int $newOwnerId,
+    ): Workspace {
+        DB::transaction(
+            function () use (
+                $workspace,
+                $currentOwner,
+                $newOwnerId,
+            ): void {
+                $newOwnerMembership = WorkspaceMember::query()
+                    ->where('workspace_id', $workspace->id)
+                    ->where('user_id', $newOwnerId)
+                    ->lockForUpdate()
+                    ->first();
+
+                if (! $newOwnerMembership) {
+                    throw ValidationException::withMessages([
+                        'user_id' => [
+                            'User harus menjadi member workspace.',
+                        ],
+                    ]);
+                }
+
+                $currentOwnerMembership = WorkspaceMember::query()
+                    ->where('workspace_id', $workspace->id)
+                    ->where('user_id', $currentOwner->id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                $workspace->update([
+                    'owner_id' => $newOwnerId,
+                ]);
+
+                $currentOwnerMembership->update([
+                    'role' => WorkspaceRole::MEMBER,
+                ]);
+
+                $newOwnerMembership->update([
+                    'role' => WorkspaceRole::OWNER,
+                ]);
+            }
+        );
+
+        return $this->loadForResponse(
+            workspace: $workspace->refresh(),
+            user: $currentOwner,
         );
     }
 

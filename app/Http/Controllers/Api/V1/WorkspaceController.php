@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Workspace\StoreWorkspaceRequest;
 use App\Http\Requests\Workspace\UpdateWorkspaceRequest;
+use App\Http\Requests\Workspace\TransferWorkspaceOwnershipRequest;
 use App\Http\Resources\V1\WorkspaceResource;
 use App\Models\Workspace;
 use App\Services\WorkspaceService;
@@ -118,6 +119,24 @@ final class WorkspaceController extends Controller
             data: WorkspaceResource::make($workspace)
                 ->resolve($request),
             message: 'Workspace berhasil diperbarui',
+        );
+    }
+
+    public function transferOwnership(
+        TransferWorkspaceOwnershipRequest $request,
+        Workspace $workspace,
+    ): JsonResponse {
+        $workspace = $this->workspaceService
+            ->transferOwnership(
+                workspace: $workspace,
+                currentOwner: $request->user(),
+                newOwnerId: $request->integer('user_id'),
+            );
+
+        return ApiResponse::success(
+            data: WorkspaceResource::make($workspace)
+                ->resolve($request),
+            message: 'Ownership workspace berhasil dipindahkan',
         );
     }
 

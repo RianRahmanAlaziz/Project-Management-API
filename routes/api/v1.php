@@ -35,22 +35,14 @@ Route::prefix('auth')->name('auth.')->group(function (): void {
 Route::middleware('auth:sanctum')->group(function (): void {
 
     // Workspace
-    Route::apiResource('workspaces', WorkspaceController::class);
-    // Workspace Members
-    Route::get(
-        'workspaces/{workspace}/members/available',
-        [
-            WorkspaceMemberController::class,
-            'availableMembers',
-        ],
-    )->name(
-        'v1.workspaces.members.available',
-    );
+    Route::patch('workspaces/{workspace}/transfer-ownership',  [WorkspaceController::class, 'transferOwnership'])->name('workspaces.transfer-ownership');
 
-    Route::apiResource(
-        'workspaces.members',
-        WorkspaceMemberController::class,
-    )->only([
+    Route::apiResource('workspaces', WorkspaceController::class);
+
+    // Workspace Members
+    Route::get('workspaces/{workspace}/members/available', [WorkspaceMemberController::class, 'availableMembers'])->name('v1.workspaces.members.available');
+
+    Route::apiResource('workspaces.members', WorkspaceMemberController::class)->only([
         'index',
         'store',
         'update',
@@ -58,9 +50,9 @@ Route::middleware('auth:sanctum')->group(function (): void {
     ]);
 
     // Projects
-    Route::apiResource('workspaces.projects', ProjectController::class,);
+    Route::apiResource('workspaces.projects', ProjectController::class);
     // Projects Members
-    Route::apiResource('workspaces.projects.members', ProjectMemberController::class,);
+    Route::apiResource('workspaces.projects.members', ProjectMemberController::class);
 
     Route::prefix('workspaces/{workspace}/projects/{project}/columns')->group(function () {
 
