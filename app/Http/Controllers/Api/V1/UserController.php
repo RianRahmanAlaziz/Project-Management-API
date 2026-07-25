@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\ResetUserPasswordRequest;
 use App\Http\Requests\Users\StoreUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 use App\Http\Resources\V1\UserResource;
@@ -90,6 +91,22 @@ class UserController extends Controller
             data: UserResource::make($user)
                 ->resolve($request),
             message: 'User berhasil diperbarui',
+        );
+    }
+
+    public function resetPassword(
+        ResetUserPasswordRequest $request,
+        User $user,
+    ): JsonResponse {
+        $user = $this->userService->resetPassword(
+            user: $user,
+            password: $request->string('password')->toString(),
+        );
+
+        return ApiResponse::success(
+            data: UserResource::make($user)
+                ->resolve($request),
+            message: 'Password user berhasil direset.',
         );
     }
 

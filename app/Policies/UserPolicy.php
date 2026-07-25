@@ -45,6 +45,11 @@ class UserPolicy
         return $user->isSuperAdmin();
     }
 
+    public function resetPassword(User $user,  User $targetUser): bool
+    {
+        return $user->isSuperAdmin();
+    }
+
     /**
      * Determine whether the user can delete the model.
      */

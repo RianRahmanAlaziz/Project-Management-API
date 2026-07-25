@@ -35,6 +35,8 @@ Route::prefix('auth')->name('auth.')->group(function (): void {
 
 Route::middleware('auth:sanctum')->group(function (): void {
     // User Management
+    Route::patch('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+
     Route::apiResource('users', UserController::class);
     // Workspace
     Route::patch('workspaces/{workspace}/transfer-ownership',  [WorkspaceController::class, 'transferOwnership'])->name('workspaces.transfer-ownership');

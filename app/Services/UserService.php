@@ -45,24 +45,51 @@ class UserService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $data['password'],
-            'role' => UserRole::USER,
+            'role' =>  $data['role'],
         ]);
     }
 
     public function update(
         User $user,
-        array $data
+        array $data,
     ): User {
+        $isLastSuperAdmin =
+            ! User::query()
+                ->where('role', UserRole::SUPER_ADMIN)
+                ->whereKeyNot($user->id)
+                ->exists();
+        if (
+            $user->isSuperAdmin()
+            && isset($data['role'])
+            && $data['role'] === UserRole::USER
+            && $isLastSuperAdmin
+        ) {
+            throw ValidationException::withMessages([
+                'role' => [
+                    'Tidak dapat mengubah role Super Admin terakhir.',
+                ],
+            ]);
+        }
+
         $user->update(
             Arr::only(
                 $data,
                 [
                     'name',
                     'email',
-                    'password',
+                    'role',
                 ],
             )
         );
+
+        return $user->refresh();
+    }
+
+    public function resetPassword(User $user, string $password): User
+    {
+        $user->update([
+            'password' => $password,
+        ]);
 
         return $user->refresh();
     }
