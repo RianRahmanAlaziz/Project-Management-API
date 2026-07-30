@@ -25,6 +25,8 @@ class Project extends Model
         'slug',
         'description',
         'status',
+        'priority',
+        'progress',
         'color',
         'start_date',
         'due_date',
@@ -37,8 +39,9 @@ class Project extends Model
     protected function casts(): array
     {
         return [
-            'start_date' => 'datetime',
-            'due_date' => 'datetime',
+            'start_date' => 'date',
+            'due_date' => 'date',
+            'progress' => 'integer',
         ];
     }
 
@@ -103,6 +106,7 @@ class Project extends Model
             ->whereIn('role', $roleValues)
             ->exists();
     }
+
 
     public function getRouteKeyName(): string
     {

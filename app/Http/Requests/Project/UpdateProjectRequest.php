@@ -50,6 +50,22 @@ class UpdateProjectRequest extends FormRequest
                 ]),
             ],
 
+            'priority' => [
+                'nullable',
+                Rule::in([
+                    'Low',
+                    'Medium',
+                    'High',
+                    'Critical',
+                ]),
+            ],
+
+            'progress' => [
+                'nullable',
+                'integer',
+                'between:0,100',
+            ],
+
             'color' => [
                 'nullable',
                 'string',

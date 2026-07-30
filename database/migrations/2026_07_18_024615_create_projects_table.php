@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('slug', 160);
             $table->text('description')->nullable();
             $table->string('status')->nullable();
+            $table->string('priority', 20)->nullable();
+            $table->unsignedTinyInteger('progress')->default(0);
             $table->string('color', 100)->nullable();
             $table->date('start_date')->nullable();
             $table->date('due_date')->nullable();

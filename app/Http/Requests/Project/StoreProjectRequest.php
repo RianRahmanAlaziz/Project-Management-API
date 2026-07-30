@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Project;
 
 use App\Models\Workspace;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -50,6 +49,22 @@ class StoreProjectRequest extends FormRequest
                     'review',
                     'done',
                 ]),
+            ],
+
+            'priority' => [
+                'nullable',
+                Rule::in([
+                    'Low',
+                    'Medium',
+                    'High',
+                    'Critical',
+                ]),
+            ],
+
+            'progress' => [
+                'nullable',
+                'integer',
+                'between:0,100',
             ],
 
             'color' => [
