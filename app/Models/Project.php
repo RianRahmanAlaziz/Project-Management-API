@@ -89,6 +89,11 @@ class Project extends Model
         return $this->hasMany(KanbanColumn::class)->orderBy('position');
     }
 
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
     /**
      * Memeriksa apakah user memiliki salah satu role.
      */

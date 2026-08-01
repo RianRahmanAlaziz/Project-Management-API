@@ -75,4 +75,20 @@ class User extends Authenticatable
             ])
             ->withTimestamps();
     }
+
+    public function createdTasks(): HasMany
+    {
+        return $this->hasMany(
+            Task::class,
+            'creator_id',
+        );
+    }
+
+    public function assignedTasks(): HasMany
+    {
+        return $this->hasMany(
+            Task::class,
+            'assignee_id',
+        );
+    }
 }

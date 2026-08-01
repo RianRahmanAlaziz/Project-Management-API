@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\HealthController;
 use App\Http\Controllers\Api\V1\KanbanColumnController;
 use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\ProjectMemberController;
+use App\Http\Controllers\Api\V1\TasksController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\WorkspaceController;
 use App\Http\Controllers\Api\V1\WorkspaceMemberController;
@@ -57,6 +58,8 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('workspaces.projects', ProjectController::class);
     // Projects Members
     Route::apiResource('workspaces.projects.members', ProjectMemberController::class);
+    // Tasks
+    Route::apiResource('workspaces.projects.tasks',  TasksController::class);
 
     Route::prefix('workspaces/{workspace}/projects/{project}/columns')->group(function () {
 
