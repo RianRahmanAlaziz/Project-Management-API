@@ -54,7 +54,7 @@ class ProjectMemberController extends Controller
 
         return ApiResponse::success(
             data: ProjectMemberResource::collection(
-                $members->getCollection()
+                $members->items()
             )->resolve($request),
 
             message: 'Project members retrieved successfully.',

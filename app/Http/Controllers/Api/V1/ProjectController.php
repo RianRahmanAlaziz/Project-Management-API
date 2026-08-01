@@ -47,7 +47,7 @@ class ProjectController extends Controller
 
         return ApiResponse::success(
             data: ProjectResource::collection(
-                $projects->getCollection()
+                $projects->items()
             )->resolve($request),
             message: 'Project berhasil diambil',
             meta: [

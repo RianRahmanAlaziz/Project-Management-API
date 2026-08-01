@@ -45,7 +45,7 @@ final class WorkspaceController extends Controller
 
         return ApiResponse::success(
             data: WorkspaceResource::collection(
-                $workspaces->getCollection()
+                $workspaces->items()
             )->resolve($request),
             message: 'Workspace berhasil diambil',
             meta: [

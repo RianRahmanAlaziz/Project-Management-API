@@ -45,7 +45,7 @@ class WorkspaceMemberController extends Controller
 
         return ApiResponse::success(
             data: WorkspaceMemberResource::collection(
-                $members->getCollection()
+                $members->items()
             )->resolve($request),
             message: 'Daftar member workspace berhasil diambil',
             meta: [

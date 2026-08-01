@@ -57,7 +57,6 @@ class StoreProjectRequest extends FormRequest
                     'Low',
                     'Medium',
                     'High',
-                    'Critical',
                 ]),
             ],
 
