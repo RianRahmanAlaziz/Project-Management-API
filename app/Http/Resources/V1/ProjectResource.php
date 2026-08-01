@@ -19,6 +19,7 @@ class ProjectResource extends JsonResource
             'workspace_id' => $this->workspace_id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'description' => $this->description,
             'status' => $this->status,
             'priority' => $this->priority,
             'progress' => $this->progress,

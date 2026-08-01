@@ -91,7 +91,7 @@ class WorkspaceMemberController extends Controller
 
         return ApiResponse::success(
             data: UserResource::collection(
-                $users->getCollection(),
+                $users->items(),
             )->resolve($request),
 
             message: 'Available workspace members retrieved successfully.',

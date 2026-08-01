@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
+use App\Http\Resources\V1\ProjectDetailResource;
 use App\Http\Resources\V1\ProjectResource;
 use App\Models\Project;
 use App\Models\Workspace;
@@ -98,9 +99,12 @@ class ProjectController extends Controller
         Gate::authorize('view', $project);
 
         return ApiResponse::success(
-            data: new ProjectResource(
+            data: new ProjectDetailResource(
                 $project->load([
+                    'workspace',
                     'owner',
+                    'members',
+                ])->loadCount([
                     'members',
                 ]),
             ),
