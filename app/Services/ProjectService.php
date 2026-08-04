@@ -30,7 +30,7 @@ class ProjectService
                     "%{$search}%",
                 ),
             )
-            ->withCount('members')
+            ->withCount(['members', 'tasks'])
             ->latest()
             ->paginate($perPage);
     }

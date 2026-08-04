@@ -25,7 +25,7 @@ class ProjectResource extends JsonResource
             'progress' => $this->progress,
             'color' => $this->color,
             'member_count' => $this->members_count,
-            'tasks_count' => 0,
+            'tasks_count' => $this->tasks_count,
             'start_date' => $this->start_date?->toDateString(),
             'due_date' => $this->due_date?->toDateString(),
         ];

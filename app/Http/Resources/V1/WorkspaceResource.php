@@ -38,7 +38,9 @@ class WorkspaceResource extends JsonResource
 
             'project_count' => $this->whenCounted('projects'),
             'members_count' => $this->whenCounted('members'),
-
+            'tasks_this_week' => $this->tasks_this_week,
+            'total_tasks' => $this->total_tasks,
+            'completed_tasks' => $this->completed_tasks,
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];

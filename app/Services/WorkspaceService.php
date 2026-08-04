@@ -54,8 +54,23 @@ final class WorkspaceService
                 'memberships' => fn($query) => $query
                     ->where('user_id', $user->id),
             ])
-            ->withCount('projects')
-            ->withCount('members')
+            ->withCount([
+                'projects',
+                'members',
+                'tasks as total_tasks',
+                'tasks as completed_tasks' => function ($query) {
+                    $query->where('tasks.status', 'done');
+                },
+                'tasks as tasks_this_week' => function ($query) {
+                    $query->whereBetween(
+                        'tasks.created_at',
+                        [
+                            now()->startOfWeek(),
+                            now()->endOfWeek(),
+                        ]
+                    );
+                },
+            ])
             ->latest()
             ->paginate($perPage);
     }
@@ -107,13 +122,31 @@ final class WorkspaceService
     ): Workspace {
         $workspace->load([
             'owner',
-            'memberships' => fn($query) => $query
-                ->where('user_id', $user->id),
+            'memberships' => fn($query) => $query->where('user_id', $user->id),
         ]);
 
         $workspace->loadCount([
             'projects',
             'members',
+
+            'tasks as total_tasks',
+
+            'tasks as completed_tasks' => function ($query) {
+                $query->where(
+                    'tasks.status',
+                    'done',
+                );
+            },
+
+            'tasks as tasks_this_week' => function ($query) {
+                $query->whereBetween(
+                    'tasks.created_at',
+                    [
+                        now()->startOfWeek(),
+                        now()->endOfWeek(),
+                    ],
+                );
+            },
         ]);
 
         return $workspace;

@@ -30,14 +30,8 @@ class ProjectController extends Controller
     ): JsonResponse {
         Gate::authorize('view', $workspace);
 
-        $perPage = min(
-            max($request->integer('per_page', 15), 1),
-            100,
-        );
-
-        $search = trim(
-            (string) $request->query('search', '')
-        );
+        $perPage = min(max($request->integer('per_page', 15), 1),  100,);
+        $search = trim((string) $request->query('search', ''));
 
         $projects = $this->projectService
             ->paginateForProject(
@@ -106,6 +100,7 @@ class ProjectController extends Controller
                     'members',
                 ])->loadCount([
                     'members',
+                    'tasks',
                 ]),
             ),
             message: 'Detail Project berhasil diambil',

@@ -17,12 +17,10 @@ class TasksResource extends JsonResource
         return [
             'id' => $this->id,
             'project_id' => $this->project_id,
-            'column_id' => $this->column_id,
             'title' => $this->title,
             'description' => $this->description,
             'status' => $this->status,
             'priority' => $this->priority,
-            'position' => $this->position,
             'start_date' => $this->start_date?->toDateString(),
             'due_date' => $this->due_date?->toDateString(),
             'creator' => $this->whenLoaded(
