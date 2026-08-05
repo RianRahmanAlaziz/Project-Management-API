@@ -10,6 +10,7 @@ use App\Services\AuthService;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 final class AuthController extends Controller
 {
@@ -22,18 +23,14 @@ final class AuthController extends Controller
      */
     public function register(RegisterRequest $request): JsonResponse
     {
-        $result = $this->authService->register(
-            $request->validated()
-        );
+        $user = $this->authService->register($request->validated());
+
+        Auth::login($user);
+
+        $request->session()->regenerate();
 
         return ApiResponse::success(
-            data: [
-                'user' => UserResource::make($result['user'])
-                    ->resolve($request),
-
-                'access_token' => $result['token'],
-                'token_type' => 'Bearer',
-            ],
+            data: UserResource::make($user),
             message: 'Register berhasil',
             status: 201,
         );
@@ -44,18 +41,14 @@ final class AuthController extends Controller
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $result = $this->authService->login(
-            $request->validated()
-        );
+        $user = $this->authService->login($request->validated());
+
+        Auth::login($user);
+
+        $request->session()->regenerate();
 
         return ApiResponse::success(
-            data: [
-                'user' => UserResource::make($result['user'])
-                    ->resolve($request),
-
-                'access_token' => $result['token'],
-                'token_type' => 'Bearer',
-            ],
+            data: UserResource::make($user),
             message: 'Login berhasil',
         );
     }
@@ -65,7 +58,11 @@ final class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $this->authService->logout($request->user());
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
 
         return ApiResponse::success(
             data: null,

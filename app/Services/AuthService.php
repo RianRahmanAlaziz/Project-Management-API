@@ -15,23 +15,14 @@ final class AuthService
      * @param  array<string, mixed>  $data
      * @return array{user: User, token: string}
      */
-    public function register(array $data): array
+    public function register(array $data): User
     {
-        return DB::transaction(function () use ($data): array {
-            $user = User::query()->create([
+        return DB::transaction(function () use ($data): User {
+            return User::query()->create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
             ]);
-
-            $token = $user
-                ->createToken($data['device_name'] ?? 'web')
-                ->plainTextToken;
-
-            return [
-                'user' => $user,
-                'token' => $token,
-            ];
         });
     }
 
@@ -43,7 +34,8 @@ final class AuthService
      *
      * @throws ValidationException
      */
-    public function login(array $data): array
+
+    public function login(array $data): User
     {
         $user = User::query()
             ->where('email', $data['email'])
@@ -60,34 +52,12 @@ final class AuthService
             ]);
         }
 
-        /*
-         * Memperbarui hash jika konfigurasi algoritma password berubah.
-         */
         if (Hash::needsRehash($user->password)) {
             $user->forceFill([
                 'password' => Hash::make($data['password']),
             ])->save();
         }
 
-        $token = $user
-            ->createToken($data['device_name'] ?? 'web')
-            ->plainTextToken;
-
-        return [
-            'user' => $user,
-            'token' => $token,
-        ];
-    }
-
-    /**
-     * Menghapus token yang sedang digunakan.
-     */
-    public function logout(User $user): void
-    {
-        $accessToken = $user->currentAccessToken();
-
-        if ($accessToken !== null) {
-            $accessToken->delete();
-        }
+        return $user;
     }
 }
