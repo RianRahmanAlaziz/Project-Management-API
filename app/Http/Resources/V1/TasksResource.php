@@ -19,7 +19,6 @@ class TasksResource extends JsonResource
             'project_id' => $this->project_id,
             'title' => $this->title,
             'description' => $this->description,
-            'status' => $this->status,
             'priority' => $this->priority,
             'start_date' => $this->start_date?->toDateString(),
             'due_date' => $this->due_date?->toDateString(),

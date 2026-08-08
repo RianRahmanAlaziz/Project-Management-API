@@ -56,13 +56,6 @@ class UpdateTasksRequest extends FormRequest
                 'exists:users,id',
             ],
 
-            'status' => [
-                'sometimes',
-                'nullable',
-                'string',
-                'max:50',
-            ],
-
             'priority' => [
                 'sometimes',
                 'nullable',
@@ -96,8 +89,6 @@ class UpdateTasksRequest extends FormRequest
             'description.string' => 'Deskripsi harus berupa teks.',
 
             'assignee_id.exists' => 'Assignee tidak ditemukan.',
-
-            'status.max' => 'Status maksimal 50 karakter.',
 
             'priority.max' => 'Priority maksimal 50 karakter.',
 

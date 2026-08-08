@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignId('assignee_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('status')->nullable();
             $table->string('priority')->nullable();
             $table->unsignedInteger('position')->default(0);
             $table->date('start_date')->nullable();

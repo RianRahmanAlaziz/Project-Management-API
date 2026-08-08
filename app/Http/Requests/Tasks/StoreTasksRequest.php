@@ -80,8 +80,6 @@ class StoreTasksRequest extends FormRequest
 
             'assignee_id.exists' => 'Assignee tidak ditemukan.',
 
-            'status.max' => 'Status maksimal 50 karakter.',
-
             'priority.max' => 'Priority maksimal 50 karakter.',
 
             'start_date.date' => 'Tanggal mulai tidak valid.',

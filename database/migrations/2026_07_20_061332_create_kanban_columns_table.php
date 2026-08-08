@@ -17,11 +17,17 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('color', 20)->nullable();
             $table->unsignedInteger('position');
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
 
-            $table->index([
+            $table->unique([
                 'project_id',
                 'position',
+            ]);
+
+            $table->unique([
+                'project_id',
+                'name',
             ]);
         });
     }

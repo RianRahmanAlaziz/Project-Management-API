@@ -61,8 +61,6 @@ class TaskService
 
             'description' => $data['description'] ?? null,
 
-            'status' => $data['status'] ?? 'todo',
-
             'priority' => $data['priority'] ?? 'medium',
 
             'position' => $this->getNextPosition(
@@ -96,7 +94,6 @@ class TaskService
                     'assignee_id',
                     'title',
                     'description',
-                    'status',
                     'priority',
                     'start_date',
                     'due_date',

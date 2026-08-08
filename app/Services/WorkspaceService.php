@@ -59,8 +59,15 @@ final class WorkspaceService
                 'members',
                 'tasks as total_tasks',
                 'tasks as completed_tasks' => function ($query) {
-                    $query->where('tasks.status', 'done');
+                    $query->whereHas(
+                        'kanbanColumn',
+                        fn($query) => $query->where(
+                            'is_completed',
+                            true,
+                        ),
+                    );
                 },
+
                 'tasks as tasks_this_week' => function ($query) {
                     $query->whereBetween(
                         'tasks.created_at',
@@ -128,15 +135,17 @@ final class WorkspaceService
         $workspace->loadCount([
             'projects',
             'members',
-
             'tasks as total_tasks',
-
             'tasks as completed_tasks' => function ($query) {
-                $query->where(
-                    'tasks.status',
-                    'done',
+                $query->whereHas(
+                    'kanbanColumn',
+                    fn($query) => $query->where(
+                        'is_completed',
+                        true,
+                    ),
                 );
             },
+
 
             'tasks as tasks_this_week' => function ($query) {
                 $query->whereBetween(
