@@ -54,9 +54,9 @@ class StoreProjectRequest extends FormRequest
             'priority' => [
                 'nullable',
                 Rule::in([
-                    'Low',
-                    'Medium',
-                    'High',
+                    'low',
+                    'medium',
+                    'high',
                 ]),
             ],
 

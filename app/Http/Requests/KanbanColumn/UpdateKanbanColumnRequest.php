@@ -30,15 +30,20 @@ class UpdateKanbanColumnRequest extends FormRequest
     {
         return [
             'name' => [
-                'required',
+                'sometimes',
                 'string',
                 'max:100',
             ],
 
             'color' => [
+                'sometimes',
                 'nullable',
                 'string',
                 'max:20',
+            ],
+            'enabled' => [
+                'sometimes',
+                'boolean',
             ],
         ];
     }

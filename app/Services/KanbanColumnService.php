@@ -15,7 +15,7 @@ class KanbanColumnService
     public function getForProject(
         Project $project,
     ): Collection {
-        return $project->columns()
+        return $project->kanbanColumns()
             ->orderBy('position')
             ->get();
     }
@@ -33,11 +33,11 @@ class KanbanColumnService
                 $data,
             ): KanbanColumn {
                 $nextPosition = (
-                    $project->columns()
-                    ->max('position') ?? -1
+                    $project->kanbanColumns()
+                    ->max('position') ?? 0
                 ) + 1;
 
-                return $project->columns()->create([
+                return $project->kanbanColumns()->create([
                     'name' => $data['name'],
                     'color' => $data['color'] ?? null,
                     'position' => $nextPosition,
@@ -53,10 +53,7 @@ class KanbanColumnService
         KanbanColumn $column,
         array $data,
     ): KanbanColumn {
-        $column->update([
-            'name' => $data['name'],
-            'color' => $data['color'] ?? null,
-        ]);
+        $column->update($data);
 
         return $column->refresh();
     }
@@ -89,19 +86,47 @@ class KanbanColumnService
         Project $project,
         array $columns,
     ): void {
-        DB::transaction(
-            function () use (
-                $project,
-                $columns,
-            ): void {
-                foreach ($columns as $item) {
-                    $project->columns()
-                        ->whereKey($item['id'])
-                        ->update([
-                            'position' => $item['position'],
-                        ]);
-                }
-            },
-        );
+        DB::transaction(function () use (
+            $project,
+            $columns,
+        ): void {
+            /*
+         * Lock project columns during reorder
+         * to prevent concurrent updates.
+         */
+            $projectColumns = $project->kanbanColumns()
+                ->lockForUpdate()
+                ->get();
+
+            $maxPosition = $projectColumns->max(
+                'position'
+            ) ?? 0;
+
+            /*
+         * Step 1:
+         * Move affected columns to temporary
+         * positive positions outside the current range.
+         */
+            foreach ($columns as $index => $item) {
+                $project->kanbanColumns()
+                    ->whereKey($item['id'])
+                    ->update([
+                        'position' =>
+                        $maxPosition + $index + 1,
+                    ]);
+            }
+
+            /*
+         * Step 2:
+         * Apply final positions.
+         */
+            foreach ($columns as $item) {
+                $project->kanbanColumns()
+                    ->whereKey($item['id'])
+                    ->update([
+                        'position' => $item['position'],
+                    ]);
+            }
+        });
     }
 }

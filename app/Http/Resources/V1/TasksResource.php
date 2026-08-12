@@ -22,11 +22,20 @@ class TasksResource extends JsonResource
             'priority' => $this->priority,
             'start_date' => $this->start_date?->toDateString(),
             'due_date' => $this->due_date?->toDateString(),
+            'column' => $this->whenLoaded(
+                'kanbanColumn',
+                fn() => [
+                    'id' => $this->kanbanColumn->id,
+                    'name' => $this->kanbanColumn->name,
+                    'position' => $this->kanbanColumn->position,
+                ],
+            ),
             'creator' => $this->whenLoaded(
                 'creator',
                 fn() => [
                     'id' => $this->creator->id,
                     'name' => $this->creator->name,
+                    'email' => $this->creator->email,
                 ],
             ),
             'assignee' => $this->whenLoaded(
@@ -35,6 +44,7 @@ class TasksResource extends JsonResource
                     ? [
                         'id' => $this->assignee->id,
                         'name' => $this->assignee->name,
+                        'email' => $this->assignee->email,
                     ]
                     : null,
             ),

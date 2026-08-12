@@ -52,7 +52,6 @@ class TasksDetailResource extends JsonResource
             ),
             'title' => $this->title,
             'description' => $this->description,
-            'status' => $this->status,
             'priority' => $this->priority,
             'position' => $this->position,
             'start_date' => $this->start_date?->toDateString(),

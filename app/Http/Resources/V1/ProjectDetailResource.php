@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\V1;
 
-use App\Enums\WorkspaceRole;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -44,26 +44,6 @@ class ProjectDetailResource extends JsonResource
 
             'start_date' => $this->start_date?->toDateString(),
             'due_date' => $this->due_date?->toDateString(),
-
-            'members' => $this->whenLoaded(
-                'members',
-                fn() => $this->members->map(
-                    fn($member) => [
-                        'id' => $member->id,
-                        'name' => $member->name,
-                        'email' => $member->email,
-
-                        'role' => $member->pivot->role instanceof WorkspaceRole
-                            ? $member->pivot->role->value
-                            : $member->pivot->role,
-
-                        'joined_at' => optional(
-                            $member->pivot->joined_at
-                        )->toISOString(),
-                    ]
-                )
-            ),
-
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];

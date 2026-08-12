@@ -147,7 +147,7 @@ class ProjectMemberController extends Controller
         );
 
         Gate::authorize(
-            'manageMembers',
+            'delete',
             $project,
         );
 

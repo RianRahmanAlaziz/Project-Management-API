@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->string('name', 100);
             $table->string('color', 20)->nullable();
+            $table->boolean('enabled')->default(true);
             $table->unsignedInteger('position');
             $table->boolean('is_completed')->default(false);
             $table->timestamps();

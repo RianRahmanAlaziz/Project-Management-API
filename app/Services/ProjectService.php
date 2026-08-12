@@ -65,9 +65,42 @@ class ProjectService
                 'joined_at' => now(),
             ]);
 
+            $project->kanbanColumns()->createMany([
+                [
+                    'name' => 'Planning',
+                    'color' => 'bg-blue-500',
+                    'position' => 1,
+                    'enabled' => true,
+                    'is_completed' => false,
+                ],
+                [
+                    'name' => 'In Progress',
+                    'color' => 'bg-yellow-500',
+                    'position' => 2,
+                    'enabled' => true,
+                    'is_completed' => false,
+                ],
+                [
+                    'name' => 'Review',
+                    'color' => 'bg-purple-500',
+                    'position' => 3,
+                    'enabled' => true,
+                    'is_completed' => false,
+                ],
+                [
+                    'name' => 'Done',
+                    'color' => 'bg-green-500',
+                    'position' => 4,
+                    'enabled' => true,
+                    'is_completed' => true,
+                ],
+            ]);
+
+
             return $project->load([
                 'owner',
                 'members',
+                'kanbanColumns',
             ]);
         });
     }

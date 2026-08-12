@@ -17,11 +17,10 @@ class KanbanColumnResource extends JsonResource
         return [
             'id' => $this->id,
             'project_id' => $this->project_id,
-
             'name' => $this->name,
             'color' => $this->color,
             'position' => $this->position,
-
+            'enabled' => $this->enabled,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];

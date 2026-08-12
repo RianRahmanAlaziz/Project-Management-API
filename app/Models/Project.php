@@ -84,7 +84,7 @@ class Project extends Model
             ->exists();
     }
 
-    public function columns(): HasMany
+    public function kanbanColumns(): HasMany
     {
         return $this->hasMany(KanbanColumn::class)->orderBy('position');
     }

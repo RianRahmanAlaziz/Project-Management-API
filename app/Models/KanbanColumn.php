@@ -18,13 +18,17 @@ class KanbanColumn extends Model
         'project_id',
         'name',
         'color',
+        'enabled',
         'position',
+        'is_completed',
     ];
 
     protected function casts(): array
     {
         return [
+            'enabled' => 'boolean',
             'position' => 'integer',
+            'is_completed' => 'boolean',
         ];
     }
 

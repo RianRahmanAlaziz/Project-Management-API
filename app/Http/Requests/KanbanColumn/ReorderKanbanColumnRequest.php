@@ -40,9 +40,13 @@ class ReorderKanbanColumnRequest extends FormRequest
 
             'columns.*' => [
                 'required',
+                'array',
+            ],
+
+            'columns.*.id' => [
+                'required',
                 'integer',
                 'distinct',
-
                 Rule::exists('kanban_columns', 'id')
                     ->where(
                         'project_id',
@@ -53,7 +57,7 @@ class ReorderKanbanColumnRequest extends FormRequest
             'columns.*.position' => [
                 'required',
                 'integer',
-                'min:0',
+                'min:1',
                 'distinct',
             ],
         ];
