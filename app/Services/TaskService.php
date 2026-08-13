@@ -37,6 +37,38 @@ class TaskService
             ->paginate($perPage);
     }
 
+    public function paginateForUser(
+        User $user,
+        ?string $search = null,
+        int $perPage = 15,
+    ): LengthAwarePaginator {
+        return Task::query()
+            ->where('assignee_id', $user->id)
+            ->whereHas('project.workspace')
+            ->with([
+                'project.workspace',
+                'kanbanColumn',
+                'creator',
+                'assignee',
+            ])
+            ->when(
+                filled($search),
+                function ($query) use ($search): void {
+                    $query->where(
+                        'title',
+                        'like',
+                        "%{$search}%",
+                    );
+                },
+            )
+            ->orderByRaw(
+                'CASE WHEN due_date IS NULL THEN 1 ELSE 0 END',
+            )
+            ->orderBy('due_date')
+            ->orderByDesc('created_at')
+            ->paginate($perPage);
+    }
+
     public function create(
         Project $project,
         User $creator,
