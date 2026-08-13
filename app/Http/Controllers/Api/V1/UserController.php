@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\ResetUserPasswordRequest;
 use App\Http\Requests\Users\StoreUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
-use App\Http\Resources\V1\UserResource;
+use App\Http\Resources\V1\Auth\UserResource;
 use App\Models\User;
 use App\Services\UserService;
 use App\Support\ApiResponse;

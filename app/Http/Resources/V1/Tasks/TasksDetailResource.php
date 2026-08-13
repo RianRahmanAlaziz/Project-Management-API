@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\V1;
+namespace App\Http\Resources\V1\Tasks;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TasksResource extends JsonResource
+class TasksDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,14 @@ class TasksResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'project_id' => $this->project_id,
-            'title' => $this->title,
-            'description' => $this->description,
-            'priority' => $this->priority,
-            'start_date' => $this->start_date?->toDateString(),
-            'due_date' => $this->due_date?->toDateString(),
+            'project' => $this->whenLoaded(
+                'project',
+                fn() => [
+                    'id' => $this->project->id,
+                    'name' => $this->project->name,
+                    'slug' => $this->project->slug,
+                ],
+            ),
             'column' => $this->whenLoaded(
                 'kanbanColumn',
                 fn() => [
@@ -48,6 +50,15 @@ class TasksResource extends JsonResource
                     ]
                     : null,
             ),
+            'title' => $this->title,
+            'description' => $this->description,
+            'priority' => $this->priority,
+            'position' => $this->position,
+            'start_date' => $this->start_date?->toDateString(),
+            'due_date' => $this->due_date?->toDateString(),
+            'completed_at' => $this->completed_at?->toISOString(),
+            'created_at' => $this->created_at?->toISOString(),
+            'updated_at' => $this->updated_at?->toISOString(),
         ];
     }
 }

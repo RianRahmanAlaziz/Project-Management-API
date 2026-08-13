@@ -68,6 +68,7 @@ class ProjectService
             $project->kanbanColumns()->createMany([
                 [
                     'name' => 'Planning',
+                    'description' => 'Not started yet',
                     'color' => 'bg-blue-500',
                     'position' => 1,
                     'enabled' => true,
@@ -75,6 +76,7 @@ class ProjectService
                 ],
                 [
                     'name' => 'In Progress',
+                    'description' => 'Currently working',
                     'color' => 'bg-yellow-500',
                     'position' => 2,
                     'enabled' => true,
@@ -82,6 +84,7 @@ class ProjectService
                 ],
                 [
                     'name' => 'Review',
+                    'description' => 'Waiting for review',
                     'color' => 'bg-purple-500',
                     'position' => 3,
                     'enabled' => true,
@@ -89,6 +92,7 @@ class ProjectService
                 ],
                 [
                     'name' => 'Done',
+                    'description' => 'Completed',
                     'color' => 'bg-green-500',
                     'position' => 4,
                     'enabled' => true,

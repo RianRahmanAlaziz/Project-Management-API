@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectMember\InviteProjectMemberRequest;
 use App\Http\Requests\ProjectMember\UpdateProjectMemberRequest;
-use App\Http\Resources\V1\ProjectMemberResource;
+use App\Http\Resources\V1\Project\ProjectMemberResource;
 use App\Models\Project;
 use App\Models\ProjectMember;
 use App\Models\Workspace;

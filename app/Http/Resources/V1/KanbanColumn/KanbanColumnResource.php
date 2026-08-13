@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\V1;
+namespace App\Http\Resources\V1\KanbanColumn;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,6 +18,7 @@ class KanbanColumnResource extends JsonResource
             'id' => $this->id,
             'project_id' => $this->project_id,
             'name' => $this->name,
+            'description' => $this->description,
             'color' => $this->color,
             'position' => $this->position,
             'enabled' => $this->enabled,

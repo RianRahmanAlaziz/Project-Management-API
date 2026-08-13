@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->string('name', 100);
+            $table->string('description', 100);
             $table->string('color', 20)->nullable();
             $table->boolean('enabled')->default(true);
             $table->unsignedInteger('position');

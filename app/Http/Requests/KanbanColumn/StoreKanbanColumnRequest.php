@@ -35,6 +35,12 @@ class StoreKanbanColumnRequest extends FormRequest
                 'max:100',
             ],
 
+            'description' => [
+                'required',
+                'string',
+                'max:100',
+            ],
+
             'color' => [
                 'nullable',
                 'string',

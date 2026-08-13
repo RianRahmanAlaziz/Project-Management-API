@@ -35,6 +35,12 @@ class UpdateKanbanColumnRequest extends FormRequest
                 'max:100',
             ],
 
+            'description' => [
+                'sometimes',
+                'string',
+                'max:100',
+            ],
+
             'color' => [
                 'sometimes',
                 'nullable',

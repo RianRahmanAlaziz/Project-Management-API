@@ -39,6 +39,7 @@ class KanbanColumnService
 
                 return $project->kanbanColumns()->create([
                     'name' => $data['name'],
+                    'description' => $data['description'],
                     'color' => $data['color'] ?? null,
                     'position' => $nextPosition,
                 ]);

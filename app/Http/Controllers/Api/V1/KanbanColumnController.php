@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\KanbanColumn\ReorderKanbanColumnRequest;
 use App\Http\Requests\KanbanColumn\StoreKanbanColumnRequest;
 use App\Http\Requests\KanbanColumn\UpdateKanbanColumnRequest;
-use App\Http\Resources\V1\KanbanColumnResource;
+use App\Http\Resources\V1\KanbanColumn\KanbanColumnResource;
 use App\Models\KanbanColumn;
 use App\Models\Project;
 use App\Models\Workspace;

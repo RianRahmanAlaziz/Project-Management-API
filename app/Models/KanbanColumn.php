@@ -17,6 +17,7 @@ class KanbanColumn extends Model
     protected $fillable = [
         'project_id',
         'name',
+        'description',
         'color',
         'enabled',
         'position',
