@@ -22,6 +22,7 @@ class KanbanColumnResource extends JsonResource
             'color' => $this->color,
             'position' => $this->position,
             'enabled' => $this->enabled,
+            'is_completed' => $this->is_completed,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];

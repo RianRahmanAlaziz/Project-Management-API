@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
 class RegisterRequest extends FormRequest
 {
@@ -36,6 +38,11 @@ class RegisterRequest extends FormRequest
                 'email',
                 'max:255',
                 'unique:users,email',
+            ],
+
+            'role' => [
+                'sometimes',
+                Rule::enum(UserRole::class),
             ],
 
             'password' => [

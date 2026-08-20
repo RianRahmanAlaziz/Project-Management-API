@@ -46,6 +46,7 @@ class TaskService
             ->where('assignee_id', $user->id)
             ->whereHas('project.workspace')
             ->with([
+                'project',
                 'project.workspace',
                 'kanbanColumn',
                 'creator',

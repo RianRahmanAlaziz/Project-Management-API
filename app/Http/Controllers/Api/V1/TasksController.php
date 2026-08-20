@@ -114,6 +114,7 @@ class TasksController extends Controller
      */
     public function update(
         UpdateTasksRequest $request,
+        Workspace $workspace,
         Project $project,
         Task $task,
     ): JsonResponse {

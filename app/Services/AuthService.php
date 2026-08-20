@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +22,7 @@ final class AuthService
             return User::query()->create([
                 'name' => $data['name'],
                 'email' => $data['email'],
+                'role' => UserRole::USER,
                 'password' => Hash::make($data['password']),
             ]);
         });

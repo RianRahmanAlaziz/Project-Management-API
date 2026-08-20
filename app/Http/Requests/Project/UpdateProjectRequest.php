@@ -56,7 +56,6 @@ class UpdateProjectRequest extends FormRequest
                     'Low',
                     'Medium',
                     'High',
-                    'Critical',
                 ]),
             ],
 

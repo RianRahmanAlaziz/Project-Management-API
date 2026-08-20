@@ -23,8 +23,8 @@ class MyTasksResource extends JsonResource
             'start_date' => $this->start_date?->toDateString(),
             'due_date' => $this->due_date?->toDateString(),
             'completed_at' => $this->completed_at?->toISOString(),
-            'workspace' => $this->whenLoaded(
-                'project.workspace',
+            'workspace' => $this->when(
+                $this->project?->workspace,
                 fn() => [
                     'id' => $this->project->workspace->id,
                     'name' => $this->project->workspace->name,
@@ -46,10 +46,10 @@ class MyTasksResource extends JsonResource
                     ? [
                         'id' => $this->kanbanColumn->id,
                         'name' => $this->kanbanColumn->name,
+                        'description' => $this->kanbanColumn->description,
                         'color' => $this->kanbanColumn->color,
                         'position' => $this->kanbanColumn->position,
-                        'is_completed' =>
-                        $this->kanbanColumn->is_completed,
+                        'is_completed' => $this->kanbanColumn->is_completed,
                     ]
                     : null,
             ),

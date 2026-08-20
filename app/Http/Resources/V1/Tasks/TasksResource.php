@@ -27,7 +27,10 @@ class TasksResource extends JsonResource
                 fn() => [
                     'id' => $this->kanbanColumn->id,
                     'name' => $this->kanbanColumn->name,
+                    'description' => $this->kanbanColumn->description,
+                    'color' => $this->kanbanColumn->color,
                     'position' => $this->kanbanColumn->position,
+                    'is_completed' => $this->kanbanColumn->is_completed,
                 ],
             ),
             'creator' => $this->whenLoaded(
