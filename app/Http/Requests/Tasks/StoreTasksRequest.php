@@ -48,7 +48,11 @@ class StoreTasksRequest extends FormRequest
                 'required',
                 'exists:kanban_columns,id',
             ],
-
+            'priority' => [
+                'required',
+                'string',
+                'max:50',
+            ],
             'assignee_id' => [
                 'nullable',
                 'exists:users,id',

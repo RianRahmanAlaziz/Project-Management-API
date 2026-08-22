@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     // Projects Members
     Route::apiResource('workspaces.projects.members', ProjectMemberController::class);
     // Tasks
+    Route::put('workspaces/{workspace}/projects/{project}/tasks/reorder',  [TasksController::class, 'reorder']);
     Route::apiResource('workspaces.projects.tasks',  TasksController::class);
     // My Tasks
     Route::get('my-tasks',  [MyTasksController::class, 'index']);

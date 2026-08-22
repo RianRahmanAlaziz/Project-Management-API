@@ -22,6 +22,7 @@ class TasksResource extends JsonResource
             'priority' => $this->priority,
             'start_date' => $this->start_date?->toDateString(),
             'due_date' => $this->due_date?->toDateString(),
+            'position' => $this->position,
             'column' => $this->whenLoaded(
                 'kanbanColumn',
                 fn() => [

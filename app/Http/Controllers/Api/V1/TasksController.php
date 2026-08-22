@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Tasks\ReorderTasksRequest;
 use App\Http\Requests\Tasks\StoreTasksRequest;
 use App\Http\Requests\Tasks\UpdateTasksRequest;
 use App\Http\Resources\V1\Tasks\TasksDetailResource;
@@ -138,6 +139,26 @@ class TasksController extends Controller
                 ])
             ),
             message: 'Task berhasil diperbarui.',
+        );
+    }
+
+    public function reorder(
+        ReorderTasksRequest $request,
+        Workspace $workspace,
+        Project $project,
+    ): JsonResponse {
+        Gate::authorize(
+            'viewAny',
+            [Task::class, $project],
+        );
+
+        $this->taskService->reorder(
+            project: $project,
+            tasks: $request->validated('tasks'),
+        );
+
+        return ApiResponse::success(
+            message: 'Urutan task berhasil diperbarui.',
         );
     }
 

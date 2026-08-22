@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class TaskService
 {
@@ -135,6 +136,32 @@ class TaskService
         );
 
         return $task->refresh();
+    }
+
+    public function reorder(
+        Project $project,
+        array $tasks,
+    ): void {
+        DB::transaction(function () use (
+            $project,
+            $tasks,
+        ): void {
+            foreach ($tasks as $item) {
+                $task = Task::query()
+                    ->where('project_id', $project->id)
+                    ->where('id', $item['id'])
+                    ->first();
+
+                if (! $task) {
+                    continue;
+                }
+
+                $task->update([
+                    'column_id' => $item['column_id'],
+                    'position' => $item['position'],
+                ]);
+            }
+        });
     }
 
     public function delete(
