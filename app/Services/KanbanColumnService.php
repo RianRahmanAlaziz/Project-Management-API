@@ -6,6 +6,7 @@ use App\Models\KanbanColumn;
 use App\Models\Project;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Validation\ValidationException;
 
 class KanbanColumnService
 {
@@ -65,6 +66,13 @@ class KanbanColumnService
     public function delete(
         KanbanColumn $column,
     ): void {
+        if ($column->tasks()->exists()) {
+            throw ValidationException::withMessages([
+                'column' => [
+                    'Kanban column tidak dapat dihapus karena masih memiliki task.',
+                ],
+            ]);
+        }
         DB::transaction(function () use ($column): void {
             $projectId = $column->project_id;
             $deletedPosition = $column->position;
